@@ -1,0 +1,146 @@
+/* router 1 */
+
+Router>enable
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface fa0/0
+Router(config-if)#ip add 10.0.0.2 255.0.0.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+Router(config-if)#exit
+Router(config)#interface se2/0
+Router(config-if)#ip add 20.0.0.1 255.0.0.0
+Router(config-if)#no shutdown
+
+%LINK-5-CHANGED: Interface Serial2/0, changed state to down
+Router(config-if)#encapsulation ppp
+Router(config-if)#clock rate 64000
+Router(config-if)#exit
+Router(config)#
+%LINK-5-CHANGED: Interface Serial2/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial2/0, changed state to up
+
+Router(config)#router ospf 1
+Router(config-router)#router-id 1.1.1.1
+Router(config-router)#network 10.0.0.0 0.255.255.255 area 3
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 1
+Router(config-router)#exit
+Router(config)#interface loopback 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+Router(config-if)#ip add 172.16.1.252 255.255.0.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+Router(config)#router ospf 1
+Router(config-router)#area 1 virtual-link 2.2.2.2
+Router(config-router)#exit
+
+
+/* router 2 */
+Router>enable
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface se2/0
+Router(config-if)#ip add 30.0.0.2 255.0.0.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Serial2/0, changed state to up
+
+Router(config-if)#encapsulation ppp
+Router(config-if)#
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial2/0, changed state to up
+
+Router(config-if)#exit
+Router(config)#interface se3/0
+Router(config-if)#ip add 40.0.0.1 255.0.0.0 
+Router(config-if)#no shutdown
+
+%LINK-5-CHANGED: Interface Serial3/0, changed state to down
+Router(config-if)#encapsulation ppp
+Router(config-if)#clock rate 64000
+Router(config-if)#exit
+Router(config)#
+%LINK-5-CHANGED: Interface Serial3/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial3/0, changed state to up
+
+Router(config)#router ospf 1
+Router(config-router)#router-id 2.2.2.2
+Router(config-router)#network 30.0.0.0 0.255.255.255 area 1
+Router(config-router)#network 40.0.0.0 0.255.255.255 area 0
+Router(config-router)#exit
+Router(config)#
+00:07:47: %OSPF-5-ADJCHG: Process 1, Nbr 40.0.0.2 on Serial3/0 from LOADING to FULL, Loading Done
+
+Router(config)#interface loopback 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+Router(config-if)#ip add 172.16.1.253 255.255.0.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+Router(config)#router ospf 1
+Router(config-router)#area 1 virtual-link 1.1.1.1
+Router(config-router)#exit
+Router(config)#
+
+/* router 3 */
+Router>enable
+Router#config t
+Enter configuration commands, one per line.  End with CNTL/Z.
+Router(config)#interface se3/0
+Router(config-if)#ip add 40.0.0.2 255.0.0.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Serial3/0, changed state to up
+
+Router(config-if)#encapsulation ppp
+Router(config-if)#exit
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Serial3/0, changed state to up
+
+Router(config)#interface fa0/0
+Router(config-if)#ip add 20.0.0.2 255.0.0.0
+Router(config-if)#no shutdown
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface FastEthernet0/0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface FastEthernet0/0, changed state to up
+
+Router(config-if)#exit
+Router(config)#router ospf 1
+Router(config-router)#network 40.0.0.0 0.255.255.255 area 0
+Router(config-router)#network 20
+00:07:45: %OSPF-5-ADJCHG: Process 1, Nbr 2.2.2.2 on Serial3/0 from LOADING to FULL, Loading Done
+
+                              ^
+% Invalid input detected at '^' marker.
+	
+Router(config-router)#network 20.0.0.0 0.255.255.255 area 2
+Router(config-router)#exit
+Router(config)#interface loopback 0
+
+Router(config-if)#
+%LINK-5-CHANGED: Interface Loopback0, changed state to up
+
+%LINEPROTO-5-UPDOWN: Line protocol on Interface Loopback0, changed state to up
+
+Router(config-if)#ip add 172.16.1.254 255.255.0.0
+Router(config-if)#no shutdown
+Router(config-if)#exit
+Router(config)#
