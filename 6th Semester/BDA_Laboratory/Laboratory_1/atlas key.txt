@@ -1,0 +1,4 @@
+Password: 5OsTDDUuj7hrTZXn
+Username: ananyaaithalcs21
+
+Connection String: mongosh "mongodb+srv://cluster0.pfago9a.mongodb.net/" --apiVersion 1 --username ananyaaithalcs21 --password 5OsTDDUuj7hrTZXn
